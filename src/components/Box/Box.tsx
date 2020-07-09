@@ -11,7 +11,7 @@ class Box extends Component<BoxType, {}> {
     render() {
         return (
             <div className={styles.Box}>
-                X
+                {this.props.content}
             </div>
         )
     }
