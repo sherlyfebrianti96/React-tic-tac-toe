@@ -33,7 +33,6 @@ class Board extends Component<BoardType, {}> {
         return (
             <div className={styles.Board}>
                 {field.map(function (boxes, index) {
-                    console.log('BOX LOHHH : ', boxes);
                     const rows = boxes.map((box, index) => {
                         return <Box content={box}/>
                     });
