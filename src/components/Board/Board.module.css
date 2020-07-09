@@ -1,0 +1,6 @@
+.Board {
+    margin: 20px;
+    border: 2px solid #282c34;
+    position: relative;
+    width: fit-content;
+}
