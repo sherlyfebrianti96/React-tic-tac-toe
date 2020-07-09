@@ -1,8 +1,9 @@
 import React, { lazy, Suspense } from 'react';
+import {BoardType} from "../../types/BoardType";
 
 const LazyBoard = lazy(() => import('./Board'));
 
-const Board = (props: JSX.IntrinsicAttributes & { children?: React.ReactNode; }) => (
+const Board = (props: BoardType & { children?: React.ReactNode; }) => (
   <Suspense fallback={null}>
     <LazyBoard {...props} />
   </Suspense>
