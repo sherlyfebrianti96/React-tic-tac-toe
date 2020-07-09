@@ -1,3 +1,3 @@
 export interface BoxType {
-    // content: string;
+    content: string;
 }

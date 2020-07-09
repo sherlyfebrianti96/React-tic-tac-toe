@@ -34,20 +34,14 @@ class Board extends Component<BoardType, {}> {
             <div className={styles.Board}>
                 {field.map(function (boxes, index) {
                     console.log('BOX LOHHH : ', boxes);
-                    return <Box/>
+                    const rows = boxes.map((box, index) => {
+                        return <Box content={box}/>
+                    });
+
+                    rows.push(<div className={styles.clearFix}/>);
+
+                    return rows;
                 })}
-                {/*<Box/>*/}
-                {/*<Box/>*/}
-                {/*<Box/>*/}
-                {/*<div className={styles.clearFix}/>*/}
-                {/*<Box/>*/}
-                {/*<Box/>*/}
-                {/*<Box/>*/}
-                {/*<div className={styles.clearFix}/>*/}
-                {/*<Box/>*/}
-                {/*<Box/>*/}
-                {/*<Box/>*/}
-                {/*<div className={styles.clearFix}/>*/}
             </div>
         )
     }
