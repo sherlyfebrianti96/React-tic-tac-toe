@@ -21,7 +21,9 @@ function App() {
                 </a>
             </header>
             <h1>Tic Tac Toe</h1>
-            <p>Let's have fun</p>
+            <p>Let's have fun !!</p>
+            <p>O won : 100 times</p>
+            <p>X won : 100 times</p>
             <Board/>
         </div>
     );
