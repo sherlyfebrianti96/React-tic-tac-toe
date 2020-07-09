@@ -32,12 +32,13 @@ class Board extends Component<BoardType, {}> {
 
         return (
             <div className={styles.Board}>
-                {field.map(function (boxes, index) {
-                    const rows = boxes.map((box, index) => {
-                        return <Box content={box}/>
+                {field.map(function (boxes, indexX) {
+                    const rows = boxes.map((box, indexY) => {
+                        const key = 'box-' + indexX + '-' + indexY;
+                        return <Box key={key} content={box}/>
                     });
-
-                    rows.push(<div className={styles.clearFix}/>);
+                    const key = 'row-' + indexX;
+                    rows.push(<div key={key} className={styles.clearFix}/>);
 
                     return rows;
                 })}
