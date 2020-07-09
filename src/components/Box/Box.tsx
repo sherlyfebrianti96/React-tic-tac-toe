@@ -3,7 +3,7 @@ import styles from './Box.module.css';
 
 const Box: React.FC = () => (
   <div className={styles.Box}>
-    Box Component
+    X
   </div>
 );
 
