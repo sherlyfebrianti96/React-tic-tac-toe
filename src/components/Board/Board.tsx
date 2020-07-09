@@ -8,34 +8,37 @@ class Board extends Component<BoardType, {}> {
         super(props);
     }
 
-    initBoxSize(): string[] {
-        const boxes = new Array();
-
-        for (let i = 0; i < this.props.size; i++) {
-            boxes.push('');
-        }
-
-        return boxes;
-    }
-
-    initiateField(): string[][] {
-        const boxes = new Array();
-        for (let i = 0; i < this.props.size; i++) {
-            boxes.push(this.initBoxSize());
-        }
-
-        return boxes;
-    }
-
     render() {
-        const field = this.initiateField();
+        const field = this.props.field;
+        const playerSelectBox = () => {
+            field[0][0] = 'X';
+        };
+        const boxClicked: any = (x: number, y: number) => {
+            if (field[x][y] !== '') {
+                alert('Already selected. Please select another boxes.');
+            } else {
+                field[x][y] = 'X';
+            }
+
+            this.setState((state, props) => {
+                return {field: props};
+            });
+        };
 
         return (
             <div className={styles.Board}>
                 {field.map(function (boxes, indexX) {
                     const rows = boxes.map((box, indexY) => {
                         const key = 'box-' + indexX + '-' + indexY;
-                        return <Box key={key} content={box}/>
+                        const clickingTheBox = () => {
+                            boxClicked(indexX, indexY)
+                        };
+
+                        return (
+                            <span key={key} onClick={clickingTheBox}>
+                                <Box content={box} playerSelectBox={playerSelectBox}/>
+                            </span>
+                        );
                     });
                     const key = 'row-' + indexX;
                     rows.push(<div key={key} className={styles.clearFix}/>);
@@ -45,6 +48,6 @@ class Board extends Component<BoardType, {}> {
             </div>
         )
     }
-};
+}
 
 export default Board;
