@@ -46,7 +46,7 @@ class Board extends Component<BoardType, {}> {
 
     announceWinner(player: string) {
         // this will be change to Announcement Board
-        alert(player + ' won this game!');
+        alert('Player ' + player + ' won this game!');
     }
 
     render() {
@@ -80,10 +80,15 @@ class Board extends Component<BoardType, {}> {
 
         const calculateWinner = (selectedIndex: any) => {
             const indexesOfPlayerOne = this.getIndexOfBoxes(field, PlayerEnum.playerOne);
+            const indexesOfPlayerTwo = this.getIndexOfBoxes(field, PlayerEnum.playerTwo);
             const checkingVerticalPlayerOne = this.checkingVerticalAndHorizontal(indexesOfPlayerOne, selectedIndex);
+            const checkingVerticalPlayerTwo = this.checkingVerticalAndHorizontal(indexesOfPlayerTwo, selectedIndex);
 
             if (checkingVerticalPlayerOne) {
                 this.announceWinner(PlayerEnum.playerOne);
+            }
+            if (checkingVerticalPlayerTwo) {
+                this.announceWinner(PlayerEnum.playerTwo);
             }
         };
 
