@@ -22,9 +22,11 @@ class Board extends Component<BoardType, {}> {
     }
 
     checkingVerticalAndHorizontalAndDiagonal(field: string[][], selectedFieldArr: any, selectedIndex: any) {
+        console.log('selectedFieldArr before sort : ', selectedFieldArr);
         selectedFieldArr.sort(function (a: any, b: any) {
             return a[0] - b[0]
         });
+        console.log('selectedFieldArr after sort : ', selectedFieldArr);
         let countX = 0;
         let countY = 0;
         const diagonalX = [];
@@ -46,7 +48,7 @@ class Board extends Component<BoardType, {}> {
             }
         }
 
-        return this.checkWin(field.length, countX, countY, diagonalX, diagonalY);
+        return this.checkWin(field.length, selectedFieldArr, countX, countY, diagonalX, diagonalY);
     }
 
     isSameArray(arr1: Array<any>, arr2: Array<any>) {
@@ -63,20 +65,32 @@ class Board extends Component<BoardType, {}> {
         return true
     }
 
-    checkWin(fieldLength: number, countX: number, countY: number, diagonalX: Array<number>, diagonalY: Array<number>) {
+    checkCrossedDiagonal(fieldLength: number, selectedFieldArr: any, reqDiagonal: any) {
+        let count = 0;
+        selectedFieldArr.filter((field: Array<any>) => {
+                const reqCheck = (element: any) => this.isSameArray(element, field);
+                if (reqDiagonal.some(reqCheck)) {
+                    count++;
+                }
+            });
+        return (count === fieldLength);
+    }
+
+    checkWin(fieldLength: number, selectedFieldArr: any, countX: number, countY: number, diagonalX: Array<number>, diagonalY: Array<number>) {
         const winHorizontal = (countX === this.props.size);
         const winVertical = (countY === this.props.size);
 
         const indexList = new Array(fieldLength).fill(0).map((item, i) => item + i);
-        const crossLeftX = this.isSameArray(indexList, diagonalX);
-        const crossLeftY = this.isSameArray(indexList, diagonalY);
-        const winDiagonalLeft = (crossLeftX && crossLeftY);
 
-        const crossRightX = this.isSameArray(indexList, diagonalX);
-        indexList.reverse();
-        const crossRightY = this.isSameArray(indexList, diagonalY);
-        const winDiagonalRight = (crossRightX && crossRightY);
+        const reqDiagonalLeft = indexList.map((idx) => [idx, idx]);
+        const winDiagonalLeft = this.checkCrossedDiagonal(fieldLength, selectedFieldArr, reqDiagonalLeft);
 
+
+        const reqDiagonalRight = indexList.map((idx, index) => {
+            const reversedIdx = (indexList.length - 1) - idx;
+            return [idx, reversedIdx]
+        });
+        const winDiagonalRight = this.checkCrossedDiagonal(fieldLength, selectedFieldArr, reqDiagonalRight);
 
         return winHorizontal || winVertical || winDiagonalLeft || winDiagonalRight;
     }
@@ -116,7 +130,8 @@ class Board extends Component<BoardType, {}> {
         };
 
         const calculateWinner = (selectedIndex: any) => {
-            const players = [PlayerEnum.playerOne, PlayerEnum.playerTwo];
+            // const players = [PlayerEnum.playerOne, PlayerEnum.playerTwo];
+            const players = [PlayerEnum.playerOne];
             players.forEach((player) => {
                 const indexesOfPlayer = this.getIndexOfBoxes(field, player);
                 const checkingVerticalPlayer = this.checkingVerticalAndHorizontalAndDiagonal(field, indexesOfPlayer, selectedIndex);
