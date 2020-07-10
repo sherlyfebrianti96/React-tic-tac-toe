@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import styles from './Board.module.css';
 import Box from "../Box/Box";
 import {BoardType} from "../../types/BoardType";
@@ -116,17 +116,15 @@ class Board extends Component<BoardType, {}> {
         };
 
         const calculateWinner = (selectedIndex: any) => {
-            const indexesOfPlayerOne = this.getIndexOfBoxes(field, PlayerEnum.playerOne);
-            const indexesOfPlayerTwo = this.getIndexOfBoxes(field, PlayerEnum.playerTwo);
-            const checkingVerticalPlayerOne = this.checkingVerticalAndHorizontalAndDiagonal(field, indexesOfPlayerOne, selectedIndex);
-            const checkingVerticalPlayerTwo = this.checkingVerticalAndHorizontalAndDiagonal(field, indexesOfPlayerTwo, selectedIndex);
+            const players = [PlayerEnum.playerOne, PlayerEnum.playerTwo];
+            players.forEach((player) => {
+                const indexesOfPlayer = this.getIndexOfBoxes(field, player);
+                const checkingVerticalPlayer = this.checkingVerticalAndHorizontalAndDiagonal(field, indexesOfPlayer, selectedIndex);
 
-            if (checkingVerticalPlayerOne) {
-                this.announceWinner(PlayerEnum.playerOne);
-            }
-            if (checkingVerticalPlayerTwo) {
-                this.announceWinner(PlayerEnum.playerTwo);
-            }
+                if (checkingVerticalPlayer) {
+                    this.announceWinner(player);
+                }
+            });
         };
 
         return (

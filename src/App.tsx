@@ -9,27 +9,16 @@ class App extends React.Component {
     }
 
     initBoxSize(size: number): string[] {
-        const boxes = [];
-
-        for (let i = 0; i < size; i++) {
-            boxes.push('');
-        }
-
-        return boxes;
+        return new Array(size).fill('').map(() => '');
     }
 
     initiateField(size: number): string[][] {
-        const boxes = [];
-        for (let i = 0; i < size; i++) {
-            boxes.push(this.initBoxSize(size));
-        }
-
-        return boxes;
+        return new Array(size).fill([]).map(() => this.initBoxSize(size));
     }
 
     render() {
         const boardSize: number = 5;
-        const currentPlayer: Array<String> = new Array<String>();
+        const currentPlayer: any = new Array<String>();
 
         return (
             <div className="App">
