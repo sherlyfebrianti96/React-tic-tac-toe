@@ -9,6 +9,17 @@ class Board extends Component<BoardType, {}> {
         super(props);
     }
 
+    getIndexOfBoxes(arr: any, player: any) {
+        const result = new Array();
+        for (var i = 0; i < arr.length; i++) {
+            var index = arr[i].indexOf(player);
+            if (index > -1) {
+                result.push([i, index]);
+            }
+        }
+        return result;
+    }
+
     render() {
         const field = this.props.field;
         const currentPlayer: Array<String> = this.props.currentPlayer;
@@ -30,11 +41,21 @@ class Board extends Component<BoardType, {}> {
                 const lastPlayer: string = getLastPlayer();
                 currentPlayer.push(getCurrentPlayer(lastPlayer));
                 field[x][y] = getLastPlayer();
+                calculateWinner();
             }
 
             this.setState((state, props) => {
                 return {field: props, currentPlayer: props};
             });
+        };
+
+        const calculateWinner = () => {
+            console.log('Calculate winners');
+
+            const indexesOfPlayerOne = this.getIndexOfBoxes(field, PlayerEnum.playerOne);
+            const indexesOfPlayerTwo = this.getIndexOfBoxes(field, PlayerEnum.playerTwo);
+            console.log('indexesOfPlayerOne', indexesOfPlayerOne);
+            console.log('indexesOfPlayerTwo', indexesOfPlayerTwo);
         };
 
         return (
