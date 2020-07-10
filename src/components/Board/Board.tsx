@@ -21,18 +21,16 @@ class Board extends Component<BoardType, {}> {
         return result;
     }
 
-    checkingVertical(arr: any, selectedIndex: any) {
-        console.log('checkingVerticalAndHorizontal arr', arr);
+    checkingVerticalAndHorizontal(arr: any, selectedIndex: any) {
         let countX = 0;
         let countY = 0;
         const y = selectedIndex[0];
         const x = selectedIndex[1];
         for (let i = 0; i < arr.length; i++) {
             for (let j = 1; j < arr[i].length; j++) {
-                console.log('value of arr[' + i + '][' + j+ '] : ', arr[i][j]);
-                // if (arr[i][j] === x) {
-                //     countX++;
-                // }
+                if (arr[i][j-1] === x) {
+                    countX++;
+                }
                 if (arr[i][j] === y) {
                     countY++;
                 }
@@ -82,7 +80,7 @@ class Board extends Component<BoardType, {}> {
 
         const calculateWinner = (selectedIndex: any) => {
             const indexesOfPlayerOne = this.getIndexOfBoxes(field, PlayerEnum.playerOne);
-            const checkingVerticalPlayerOne = this.checkingVertical(indexesOfPlayerOne, selectedIndex);
+            const checkingVerticalPlayerOne = this.checkingVerticalAndHorizontal(indexesOfPlayerOne, selectedIndex);
 
             if (checkingVerticalPlayerOne) {
                 this.announceWinner(PlayerEnum.playerOne);
