@@ -9,7 +9,7 @@ class App extends React.Component {
     }
 
     initBoxSize(size: number): string[] {
-        const boxes = new Array();
+        const boxes = [];
 
         for (let i = 0; i < size; i++) {
             boxes.push('');
@@ -19,7 +19,7 @@ class App extends React.Component {
     }
 
     initiateField(size: number): string[][] {
-        const boxes = new Array();
+        const boxes = [];
         for (let i = 0; i < size; i++) {
             boxes.push(this.initBoxSize(size));
         }

@@ -10,7 +10,7 @@ class Board extends Component<BoardType, {}> {
     }
 
     getIndexOfBoxes(arr: any, player: any) {
-        const result = new Array();
+        const result = [];
         for (let i = 0; i < arr.length; i++) {
             for (let j = 0; j < arr.length; j++) {
                 if (arr[i][j] === player) {
@@ -21,27 +21,63 @@ class Board extends Component<BoardType, {}> {
         return result;
     }
 
-    checkingVerticalAndHorizontal(arr: any, selectedIndex: any) {
+    checkingVerticalAndHorizontalAndDiagonal(field: string[][], selectedFieldArr: any, selectedIndex: any) {
+        console.log('before selectedFieldArr after sort : ', selectedFieldArr);
+        selectedFieldArr.sort(function (a: any, b: any) {
+            return a[0] - b[0]
+        });
+        console.log('selectedFieldArr after sort : ', selectedFieldArr);
         let countX = 0;
         let countY = 0;
+        const diagonalX = [];
+        const diagonalY = [];
         const y = selectedIndex[0];
         const x = selectedIndex[1];
-        for (let i = 0; i < arr.length; i++) {
-            for (let j = 1; j < arr[i].length; j++) {
-                if (arr[i][j-1] === x) {
+        for (let i = 0; i < selectedFieldArr.length; i++) {
+            for (let j = 1; j < selectedFieldArr[i].length; j++) {
+                const horizontalValue = selectedFieldArr[i][j - 1];
+                const verticalValue = selectedFieldArr[i][j];
+                console.log('horizontalValue : ', horizontalValue);
+                console.log('verticalValue : ', verticalValue);
+                if (horizontalValue === x) {
                     countX++;
                 }
-                if (arr[i][j] === y) {
+                if (verticalValue === y) {
                     countY++;
                 }
+                diagonalX.push(horizontalValue);
+                diagonalY.push(verticalValue);
             }
         }
 
-        return this.checkWin(countX, countY);
+        return this.checkWin(field.length, countX, countY, diagonalX, diagonalY);
     }
 
-    checkWin(countX: number, countY: number) {
-        return (countX === this.props.size) || (countY === this.props.size);
+    isSameArray(arr1: Array<any>, arr2: Array<any>) {
+        if (arr1.length !== arr2.length) {
+            return false;
+        }
+
+        for(let i = 0; i < arr1.length; i++) {
+            if (arr1[i] !== arr2[i]) {
+                return false;
+            }
+        }
+
+        return true
+    }
+
+    checkWin(fieldLength: number, countX: number, countY: number, diagonalX: Array<number>, diagonalY: Array<number>) {
+        const winHorizontal = (countX === this.props.size);
+        const winVertical = (countY === this.props.size);
+
+        const indexList = new Array(fieldLength).fill(0).map((item, i) => item + i);
+        const crossLeftX = this.isSameArray(indexList, diagonalX);
+        const crossLeftY = this.isSameArray(indexList, diagonalY);
+        const winDiagonalLeft = (crossLeftX && crossLeftY);
+
+
+        return winHorizontal || winVertical || winDiagonalLeft;
     }
 
     announceWinner(player: string) {
@@ -81,8 +117,8 @@ class Board extends Component<BoardType, {}> {
         const calculateWinner = (selectedIndex: any) => {
             const indexesOfPlayerOne = this.getIndexOfBoxes(field, PlayerEnum.playerOne);
             const indexesOfPlayerTwo = this.getIndexOfBoxes(field, PlayerEnum.playerTwo);
-            const checkingVerticalPlayerOne = this.checkingVerticalAndHorizontal(indexesOfPlayerOne, selectedIndex);
-            const checkingVerticalPlayerTwo = this.checkingVerticalAndHorizontal(indexesOfPlayerTwo, selectedIndex);
+            const checkingVerticalPlayerOne = this.checkingVerticalAndHorizontalAndDiagonal(field, indexesOfPlayerOne, selectedIndex);
+            const checkingVerticalPlayerTwo = this.checkingVerticalAndHorizontalAndDiagonal(field, indexesOfPlayerTwo, selectedIndex);
 
             if (checkingVerticalPlayerOne) {
                 this.announceWinner(PlayerEnum.playerOne);
