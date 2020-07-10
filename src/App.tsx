@@ -1,7 +1,8 @@
-import React, {Component, lazy} from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Board from "./components/Board/Board";
+import {PlayerEnum} from "./stories/PlayerEnum";
 
 class App extends React.Component {
     constructor(props: any) {
@@ -35,6 +36,7 @@ class App extends React.Component {
             name: 'O'
         };
         const boardSize: number = 5;
+        const currentPlayer: Array<String> = new Array<String>();
 
         return (
             <div className="App">
@@ -45,7 +47,7 @@ class App extends React.Component {
                 <p>Let's have fun !!</p>
                 <p>O won : 100 times</p>
                 <p>X won : 100 times</p>
-                <Board size={boardSize} field={this.initiateField(boardSize)}/>
+                <Board size={boardSize} field={this.initiateField(boardSize)} currentPlayer={currentPlayer} />
             </div>
         );
     }
