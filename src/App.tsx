@@ -2,7 +2,6 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Board from "./components/Board/Board";
-import {PlayerEnum} from "./stories/PlayerEnum";
 
 class App extends React.Component {
     constructor(props: any) {
@@ -29,12 +28,6 @@ class App extends React.Component {
     }
 
     render() {
-        const player1 = {
-            name: 'X'
-        };
-        const player2 = {
-            name: 'O'
-        };
         const boardSize: number = 5;
         const currentPlayer: Array<String> = new Array<String>();
 
