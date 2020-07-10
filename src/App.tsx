@@ -27,8 +27,9 @@ class App extends React.Component {
                 </header>
                 <h1>Tic Tac Toe</h1>
                 <p>Let's have fun !!</p>
-                <p>O won : 100 times</p>
-                <p>X won : 100 times</p>
+                <p>Current board size : {boardSize}</p>
+                {/*<p>O won : 100 times</p>*/}
+                {/*<p>X won : 100 times</p>*/}
                 <Board size={boardSize} field={this.initiateField(boardSize)} currentPlayer={currentPlayer} />
             </div>
         );

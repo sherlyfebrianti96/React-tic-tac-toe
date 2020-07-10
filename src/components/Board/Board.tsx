@@ -97,7 +97,13 @@ class Board extends Component<BoardType, {}> {
 
     announceWinner(player: string) {
         // this will be change to Announcement Board
-        alert('Player ' + player + ' won this game!');
+        setTimeout(
+            function() {
+                alert('Player ' + player + ' won this game!')
+            }
+                .bind(this),
+            100
+        );
     }
 
     render() {
