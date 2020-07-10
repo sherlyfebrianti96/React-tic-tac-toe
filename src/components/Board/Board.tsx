@@ -11,13 +11,37 @@ class Board extends Component<BoardType, {}> {
 
     getIndexOfBoxes(arr: any, player: any) {
         const result = new Array();
-        for (var i = 0; i < arr.length; i++) {
-            var index = arr[i].indexOf(player);
-            if (index > -1) {
-                result.push([i, index]);
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < arr.length; j++) {
+                if (arr[i][j] === player) {
+                    result.push([i, j]);
+                }
             }
         }
         return result;
+    }
+
+    checkingVertical(arr: any, selectedIndex: any) {
+        let count = 0;
+        const x = selectedIndex[0];
+        const y = selectedIndex[1];
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = 1; j < arr[i].length; j++) {
+                if (arr[i][j] === x) {
+                    count++;
+                }
+            }
+        }
+
+        return this.checkWin(count);
+    }
+
+    checkWin(count: number) {
+        return (count === this.props.size);
+    }
+
+    announceWinner(player: string) {
+        alert(player + ' won this game!');
     }
 
     render() {
@@ -32,16 +56,16 @@ class Board extends Component<BoardType, {}> {
         };
 
         const getLastPlayer: any = () => {
-            return (currentPlayer.length > 0) ? currentPlayer[currentPlayer.length - 1] : PlayerEnum.playerOne;
+            return (currentPlayer.length > 0) ? currentPlayer[currentPlayer.length - 1] : PlayerEnum.playerTwo;
         };
-        const boxClicked: any = (x: number, y: number) => {
-            if (field[x][y] !== '') {
+        const boxClicked: any = (y: number, x: number) => {
+            if (field[y][x] !== '') {
                 alert('Already selected. Please select another boxes.');
             } else {
                 const lastPlayer: string = getLastPlayer();
                 currentPlayer.push(getCurrentPlayer(lastPlayer));
-                field[x][y] = getLastPlayer();
-                calculateWinner();
+                field[y][x] = getLastPlayer();
+                calculateWinner([x, y]);
             }
 
             this.setState((state, props) => {
@@ -49,22 +73,22 @@ class Board extends Component<BoardType, {}> {
             });
         };
 
-        const calculateWinner = () => {
-            console.log('Calculate winners');
-
+        const calculateWinner = (selectedIndex: any) => {
             const indexesOfPlayerOne = this.getIndexOfBoxes(field, PlayerEnum.playerOne);
-            const indexesOfPlayerTwo = this.getIndexOfBoxes(field, PlayerEnum.playerTwo);
-            console.log('indexesOfPlayerOne', indexesOfPlayerOne);
-            console.log('indexesOfPlayerTwo', indexesOfPlayerTwo);
+            const checkingVerticalPlayerOne = this.checkingVertical(indexesOfPlayerOne, selectedIndex);
+
+            if (checkingVerticalPlayerOne) {
+                this.announceWinner(PlayerEnum.playerOne);
+            }
         };
 
         return (
             <div className={styles.Board}>
-                {field.map(function (boxes, indexX) {
-                    const rows = boxes.map(function (box, indexY) {
-                        const key = 'box-' + indexX + '-' + indexY;
+                {field.map(function (boxes, indexY) {
+                    const rows = boxes.map(function (box, indexX) {
+                        const key = 'box-' + indexY + '-' + indexX;
                         const clickingTheBox = () => {
-                            boxClicked(indexX, indexY);
+                            boxClicked(indexY, indexX);
                         };
 
                         return (
@@ -73,7 +97,7 @@ class Board extends Component<BoardType, {}> {
                             </span>
                         );
                     });
-                    const key = 'row-' + indexX;
+                    const key = 'row-' + indexY;
                     rows.push(<div key={key} className={styles.clearFix}/>);
 
                     return rows;
