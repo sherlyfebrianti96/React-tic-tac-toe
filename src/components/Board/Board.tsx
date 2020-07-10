@@ -22,25 +22,32 @@ class Board extends Component<BoardType, {}> {
     }
 
     checkingVertical(arr: any, selectedIndex: any) {
-        let count = 0;
-        const x = selectedIndex[0];
-        const y = selectedIndex[1];
+        console.log('checkingVerticalAndHorizontal arr', arr);
+        let countX = 0;
+        let countY = 0;
+        const y = selectedIndex[0];
+        const x = selectedIndex[1];
         for (let i = 0; i < arr.length; i++) {
             for (let j = 1; j < arr[i].length; j++) {
-                if (arr[i][j] === x) {
-                    count++;
+                console.log('value of arr[' + i + '][' + j+ '] : ', arr[i][j]);
+                // if (arr[i][j] === x) {
+                //     countX++;
+                // }
+                if (arr[i][j] === y) {
+                    countY++;
                 }
             }
         }
 
-        return this.checkWin(count);
+        return this.checkWin(countX, countY);
     }
 
-    checkWin(count: number) {
-        return (count === this.props.size);
+    checkWin(countX: number, countY: number) {
+        return (countX === this.props.size) || (countY === this.props.size);
     }
 
     announceWinner(player: string) {
+        // this will be change to Announcement Board
         alert(player + ' won this game!');
     }
 
@@ -92,7 +99,7 @@ class Board extends Component<BoardType, {}> {
                         };
 
                         return (
-                            <span key={key} onClick={clickingTheBox}>
+                            <span key={key} onClickCapture={clickingTheBox}>
                                 <Box content={box}/>
                             </span>
                         );
