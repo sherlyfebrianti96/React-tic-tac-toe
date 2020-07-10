@@ -22,11 +22,9 @@ class Board extends Component<BoardType, {}> {
     }
 
     checkingVerticalAndHorizontalAndDiagonal(field: string[][], selectedFieldArr: any, selectedIndex: any) {
-        console.log('before selectedFieldArr after sort : ', selectedFieldArr);
         selectedFieldArr.sort(function (a: any, b: any) {
             return a[0] - b[0]
         });
-        console.log('selectedFieldArr after sort : ', selectedFieldArr);
         let countX = 0;
         let countY = 0;
         const diagonalX = [];
@@ -37,8 +35,6 @@ class Board extends Component<BoardType, {}> {
             for (let j = 1; j < selectedFieldArr[i].length; j++) {
                 const horizontalValue = selectedFieldArr[i][j - 1];
                 const verticalValue = selectedFieldArr[i][j];
-                console.log('horizontalValue : ', horizontalValue);
-                console.log('verticalValue : ', verticalValue);
                 if (horizontalValue === x) {
                     countX++;
                 }
@@ -76,8 +72,13 @@ class Board extends Component<BoardType, {}> {
         const crossLeftY = this.isSameArray(indexList, diagonalY);
         const winDiagonalLeft = (crossLeftX && crossLeftY);
 
+        const crossRightX = this.isSameArray(indexList, diagonalX);
+        indexList.reverse();
+        const crossRightY = this.isSameArray(indexList, diagonalY);
+        const winDiagonalRight = (crossRightX && crossRightY);
 
-        return winHorizontal || winVertical || winDiagonalLeft;
+
+        return winHorizontal || winVertical || winDiagonalLeft || winDiagonalRight;
     }
 
     announceWinner(player: string) {
