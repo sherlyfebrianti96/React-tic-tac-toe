@@ -136,8 +136,8 @@ class Board extends Component<BoardType, {}> {
         };
 
         const calculateWinner = (selectedIndex: any) => {
-            // const players = [PlayerEnum.playerOne, PlayerEnum.playerTwo];
-            const players = [PlayerEnum.playerOne];
+            const players = [PlayerEnum.playerOne, PlayerEnum.playerTwo];
+            // const players = [PlayerEnum.playerOne];
             players.forEach((player) => {
                 const indexesOfPlayer = this.getIndexOfBoxes(field, player);
                 const checkingVerticalPlayer = this.checkingVerticalAndHorizontalAndDiagonal(field, indexesOfPlayer, selectedIndex);
